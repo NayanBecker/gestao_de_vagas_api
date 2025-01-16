@@ -1,4 +1,4 @@
-package br.com.nayanbecker.gestao_vagas.modules.candidate;
+package br.com.nayanbecker.gestao_vagas.modules.candidate.Entities;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
