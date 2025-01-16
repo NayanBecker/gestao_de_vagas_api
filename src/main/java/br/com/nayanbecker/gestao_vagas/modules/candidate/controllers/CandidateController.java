@@ -20,6 +20,10 @@ public class CandidateController {
 
     @PostMapping("/")
     public CandidateEntity create( @Valid @RequestBody CandidateEntity candidateEntity) {
+        this.candidateRepository.findByEmailOrUsername(candidateEntity.getEmail(), candidateEntity.getUsername())
+        .ifPresent((user) -> {
+            throw new RuntimeException("User already exists");
+        });
         return this.candidateRepository.save(candidateEntity);
     }
 }
