@@ -13,12 +13,12 @@ public class CreateCandidateUseCase {
     private CandidateRepository candidateRepository;
     public CandidateEntity execute(CandidateEntity candidateEntity) {
 
-
-    this.candidateRepository.findByEmailOrUsername(candidateEntity.getEmail(), candidateEntity.getUsername())
+    this.candidateRepository
+        .findByEmailOrUsername(candidateEntity.getEmail(), candidateEntity.getUsername())
         .ifPresent((user) -> {
             throw new UserFoundException("User already exists");
         });
-        return this.candidateRepository.save(candidateEntity);
 
+        return this.candidateRepository.save(candidateEntity);
     }
 }
