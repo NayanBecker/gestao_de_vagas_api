@@ -1,4 +1,4 @@
-package br.com.nayanbecker.gestao_vagas.modules.candidate.Entities;
+package br.com.nayanbecker.gestao_vagas.modules.company.entities;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -14,15 +14,16 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+@Entity(name = "company")
 @Data
-@Entity(name = "candidate")
-public class CandidateEntity {
-
+public class CompanyEntity {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    
 
-    @Length(max = 200)
+        @Length(max = 200)
     private String name;
 
     @Pattern(regexp = "^[A-z]\\S+{3,30}$", message = "Username should have between 3 and 30 characters")
@@ -38,6 +39,7 @@ public class CandidateEntity {
 
     @Length(max = 500)
     private String description;
+    private String website;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
