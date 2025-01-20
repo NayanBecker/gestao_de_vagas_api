@@ -14,9 +14,7 @@ public class JWTprovider {
     private String secretKey;
     
     public String validateToken(String token){
-        if(token == null || token.isEmpty() || !token.startsWith("Bearer ")){
-            return null;
-        }
+
         token = token.replace("Bearer ", "");
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
