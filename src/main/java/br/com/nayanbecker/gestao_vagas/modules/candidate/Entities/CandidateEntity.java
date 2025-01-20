@@ -25,7 +25,7 @@ public class CandidateEntity {
     @Length(max = 200)
     private String name;
 
-    @Pattern(regexp = "^[A-z]\\S+{3,30}$", message = "Username should have between 3 and 30 characters")
+    @Pattern(regexp = "^[A-z]\\S+{3,30}$", message = "Username should have between 3 and 30 characters and can't contain spaces")
     private String username;
 
     @Email(message = "Email should be valid")
