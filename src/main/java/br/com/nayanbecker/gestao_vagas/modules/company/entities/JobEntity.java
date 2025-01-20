@@ -13,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -38,7 +37,6 @@ public class JobEntity {
     private CompanyEntity companyEntity;
 
     @Column(name = "company_id")
-    @NotNull(message = "Este campo é obrigatório")
     private UUID companyId;
 
     @CreationTimestamp
