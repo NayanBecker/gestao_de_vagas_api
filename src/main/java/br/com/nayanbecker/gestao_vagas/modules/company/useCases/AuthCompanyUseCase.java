@@ -2,6 +2,7 @@ package br.com.nayanbecker.gestao_vagas.modules.company.useCases;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 
 import javax.naming.AuthenticationException;
 
@@ -43,6 +44,8 @@ public class AuthCompanyUseCase {
         }
         Algorithm algorithm = Algorithm.HMAC256(secretkey);
         var token = JWT.create()
+            .withIssuer("javagas")
+            .withClaim("roles", Arrays.asList("company"))
             .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
             .withSubject(company.getId().toString())
             .sign(algorithm);
