@@ -1,6 +1,5 @@
 package br.com.nayanbecker.gestao_vagas.modules.candidate.useCases;
 
-
 import java.time.Instant;
 import java.util.Arrays;
 
@@ -21,10 +20,9 @@ import br.com.nayanbecker.gestao_vagas.modules.candidate.dto.AuthCandidateRespon
 
 @Service
 public class AuthCandidateUseCase {
-    
+
     @Value("${security.token.secret.candidate}")
     private String secretKey;
-
 
     @Autowired
     private CandidateRepository candidateRepository;
@@ -32,13 +30,14 @@ public class AuthCandidateUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public AuthCandidateResponseDTO execute(AuthCandidateRequestDTO authCandidateRequestDTO) throws AuthenticationException{
+    public AuthCandidateResponseDTO execute(AuthCandidateRequestDTO authCandidateRequestDTO) throws AuthenticationException {
         var candidate = this.candidateRepository.findByUsername(authCandidateRequestDTO.username())
-            .orElseThrow(() -> {
-                throw new UsernameNotFoundException("Candidate not found");
-            });
+                .orElseThrow(() -> {
+                    throw new UsernameNotFoundException("Candidate not found");
+                });
+
         var passwordMatches = this.passwordEncoder
-            .matches(authCandidateRequestDTO.password(), candidate.getPassword());
+                .matches(authCandidateRequestDTO.password(), candidate.getPassword());
 
         if (!passwordMatches) {
             throw new AuthenticationException();
@@ -47,16 +46,16 @@ public class AuthCandidateUseCase {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         var expiresIn = Instant.now().plus(java.time.Duration.ofHours(2));
         var token = JWT.create()
-            .withIssuer("javagas")
-            .withSubject(candidate.getId().toString())
-            .withClaim("roles", Arrays.asList("candidate"))
-            .withExpiresAt(expiresIn)
-            .sign(algorithm);
+                .withIssuer("javagas")
+                .withSubject(candidate.getId().toString())
+                .withClaim("roles", Arrays.asList("candidate"))
+                .withExpiresAt(expiresIn)
+                .sign(algorithm);
 
-            var authCandidateResponseDTO = AuthCandidateResponseDTO.builder()
+        var authCandidateResponseDTO = AuthCandidateResponseDTO.builder()
                 .access_token(token)
                 .expires_in(expiresIn.toEpochMilli())
-                .build();   
-            return authCandidateResponseDTO;
+                .build();
+        return authCandidateResponseDTO;
     }
 }

@@ -3,6 +3,8 @@ package br.com.nayanbecker.gestao_vagas.security;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -23,7 +25,7 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        SecurityContextHolder.getContext().setAuthentication(null);
+        // SecurityContextHolder.getContext().setAuthentication(null);
         String header = request.getHeader("Authorization");
 
         if (request.getRequestURI().startsWith("/candidate/")) {
@@ -34,14 +36,20 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
-    
+
+                var roles = token.getClaim("roles").asList(Object.class);
+                var grands = roles.stream()
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString())
+                        ).toList();
+
                 request.setAttribute("candidate_id", token.getSubject());
-                System.out.println("========== TOKEN ==========: \n\n" + token.getSubject()) ;
+                UsernamePasswordAuthenticationToken auth
+                        = new UsernamePasswordAuthenticationToken(token.getSubject(), null, grands);
+                SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
         filterChain.doFilter(request, response);
 
-       
     }
 
 }
