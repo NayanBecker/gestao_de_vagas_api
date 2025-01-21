@@ -31,32 +31,32 @@ public class AuthCompanyUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Object execute(AuthCompanyRequestDTO authCompanyDTO) throws AuthenticationException{
-        var company = this.companyRepository.findByEmail(authCompanyDTO.getEmail()).orElseThrow(
-            () -> {
-                throw new UsernameNotFoundException("Company not found");
-            }
-        );
+    public AuthCompanyResponseDTO execute(AuthCompanyRequestDTO authCompanyRequestDTO) throws AuthenticationException {
+        var company = this.companyRepository.findByEmail(authCompanyRequestDTO.getEmail())
+                .orElseThrow(() -> {
+                    throw new UsernameNotFoundException("Company not found");
+                });
 
-        boolean passwordMatches = this.passwordEncoder.matches(authCompanyDTO.getPassword(), company.getPassword());
+        var passwordMatches = this.passwordEncoder
+        .matches(authCompanyRequestDTO.getPassword(), company.getPassword());
 
-        if(!passwordMatches){
+        if (!passwordMatches) {
             throw new AuthenticationException();
         }
         Algorithm algorithm = Algorithm.HMAC256(secretkey);
         var expiresIn = Instant.now().plus(Duration.ofHours(2));
         var token = JWT.create()
-            .withIssuer("javagas")
-            .withClaim("roles", Arrays.asList("company"))
-            .withExpiresAt(expiresIn)
-            .withSubject(company.getId().toString())
-            .sign(algorithm);
+                .withIssuer("javagas")
+                .withSubject(company.getId().toString())
+                .withClaim("roles", Arrays.asList("company"))
+                .withExpiresAt(expiresIn)
+                .sign(algorithm);
 
-            var authCompanyResponseDTO = AuthCompanyResponseDTO.builder()
+        var authCompanyResponseDTO = AuthCompanyResponseDTO.builder()
                 .access_token(token)
                 .expires_in(expiresIn.getEpochSecond())
                 .build();
-            return authCompanyResponseDTO;
+        return authCompanyResponseDTO;
     }
-    
+
 }
