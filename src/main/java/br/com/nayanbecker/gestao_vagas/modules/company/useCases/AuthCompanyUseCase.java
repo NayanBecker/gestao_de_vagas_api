@@ -15,7 +15,8 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
-import br.com.nayanbecker.gestao_vagas.modules.company.dto.AuthCompanyDTO;
+import br.com.nayanbecker.gestao_vagas.modules.company.dto.AuthCompanyRequestDTO;
+import br.com.nayanbecker.gestao_vagas.modules.company.dto.AuthCompanyResponseDTO;
 import br.com.nayanbecker.gestao_vagas.modules.company.repositories.CompanyRepository;
 
 @Service
@@ -30,7 +31,7 @@ public class AuthCompanyUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public String execute(AuthCompanyDTO authCompanyDTO) throws AuthenticationException{
+    public Object execute(AuthCompanyRequestDTO authCompanyDTO) throws AuthenticationException{
         var company = this.companyRepository.findByEmail(authCompanyDTO.getEmail()).orElseThrow(
             () -> {
                 throw new UsernameNotFoundException("Company not found");
@@ -43,13 +44,19 @@ public class AuthCompanyUseCase {
             throw new AuthenticationException();
         }
         Algorithm algorithm = Algorithm.HMAC256(secretkey);
+        var expiresIn = Instant.now().plus(Duration.ofHours(2));
         var token = JWT.create()
             .withIssuer("javagas")
             .withClaim("roles", Arrays.asList("company"))
-            .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
+            .withExpiresAt(expiresIn)
             .withSubject(company.getId().toString())
             .sign(algorithm);
-            return token;
+
+            var authCompanyResponseDTO = AuthCompanyResponseDTO.builder()
+                .access_token(token)
+                .expires_in(expiresIn.getEpochSecond())
+                .build();
+            return authCompanyResponseDTO;
     }
     
 }

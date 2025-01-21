@@ -8,18 +8,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.nayanbecker.gestao_vagas.modules.company.dto.AuthCompanyDTO;
+import br.com.nayanbecker.gestao_vagas.modules.company.dto.AuthCompanyRequestDTO;
 import br.com.nayanbecker.gestao_vagas.modules.company.useCases.AuthCompanyUseCase;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/company")
 public class AuthCompanyController {
     
     @Autowired
     private AuthCompanyUseCase authCompanyUseCase;
 
-    @PostMapping("/company")
-    public ResponseEntity<String> create(@RequestBody AuthCompanyDTO authCompanyDTO){
+    @PostMapping("/auth")
+    public ResponseEntity<Object> create(@RequestBody AuthCompanyRequestDTO authCompanyDTO){
         try {
             var result =  authCompanyUseCase.execute(authCompanyDTO);
             return ResponseEntity.ok().body(result);
