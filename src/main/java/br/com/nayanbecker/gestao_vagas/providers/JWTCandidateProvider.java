@@ -20,7 +20,9 @@ public class JWTCandidateProvider {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         try {
 
-            var tokenDecoded = JWT.require(algorithm)
+            var tokenDecoded = 
+                JWT
+                    .require(algorithm)
                     .build()
                     .verify(token);
             return tokenDecoded;
