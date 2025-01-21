@@ -28,7 +28,7 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
         // SecurityContextHolder.getContext().setAuthentication(null);
         String header = request.getHeader("Authorization");
 
-        if (request.getRequestURI().startsWith("/candidate/")) {
+        if (request.getRequestURI().startsWith("/candidate")) {
             if (header != null) {
 
                 var token = this.jwtProvider.validateToken(header);
@@ -37,12 +37,13 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
                     return;
                 }
 
-                var roles = token.getClaim("roles").asList(Object.class);
-                var grands = roles.stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString())
-                        ).toList();
-
                 request.setAttribute("candidate_id", token.getSubject());
+                var roles = token.getClaim("roles").asList(Object.class);
+
+                var grands = roles.stream()
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString()))
+                        .toList();
+
                 UsernamePasswordAuthenticationToken auth
                         = new UsernamePasswordAuthenticationToken(token.getSubject(), null, grands);
                 SecurityContextHolder.getContext().setAuthentication(auth);
