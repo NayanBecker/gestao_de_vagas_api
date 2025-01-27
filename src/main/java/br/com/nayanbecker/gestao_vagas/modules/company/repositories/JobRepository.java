@@ -10,7 +10,7 @@ import br.com.nayanbecker.gestao_vagas.modules.company.entities.JobEntity;
 public interface JobRepository extends JpaRepository<JobEntity, UUID> {
 
 
-    List<JobEntity> findByDescriptionContaining(String filter);
+    List<JobEntity> findByTitleContainingIgnoreCase(String title);
     
     
 }
