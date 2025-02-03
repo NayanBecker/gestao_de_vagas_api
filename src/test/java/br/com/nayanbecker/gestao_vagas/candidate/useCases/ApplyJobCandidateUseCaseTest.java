@@ -1,4 +1,4 @@
-package br.com.nayanbecker.gestao_vagas.useCases;
+package br.com.nayanbecker.gestao_vagas.candidate.useCases;
 
 import java.util.Optional;
 import java.util.UUID;
