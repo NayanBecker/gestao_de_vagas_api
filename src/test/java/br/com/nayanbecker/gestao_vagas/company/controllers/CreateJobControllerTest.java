@@ -13,10 +13,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import br.com.nayanbecker.gestao_vagas.modules.company.dto.CreateJobDTO;
+import br.com.nayanbecker.gestao_vagas.utils.UtilsTest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= WebEnvironment.RANDOM_PORT)
@@ -44,21 +42,10 @@ public class CreateJobControllerTest {
         var result = mvc.perform(
             MockMvcRequestBuilders.post("/company/job/")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(objectToJSON(createdJobDTO)))
+            .content(UtilsTest.objectToJSON(createdJobDTO)))
             .andExpect(MockMvcResultMatchers.status().isOk());
 
         System.out.println(result);
-
-    }
-
-    private static String objectToJSON(Object obj){
-        try {
-            final ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
 
     }
 }
