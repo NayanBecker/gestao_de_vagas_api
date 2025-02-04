@@ -23,31 +23,31 @@ public class SecurityConfig {
     private static final String[] SWAGGER_LIST = {
         "/swagger-ui/**",
         "/v3/api-docs/**",
-        "/swagger-resources/**"
+        "/swagger-resource/**",
+        "/actuator/**"
     };
-    
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> {
-                auth
-                .requestMatchers("/candidate/").permitAll()
-                .requestMatchers("/company/").permitAll()
-                .requestMatchers("/candidate/auth").permitAll()
-                .requestMatchers("/company/auth").permitAll()
-                .requestMatchers(SWAGGER_LIST).permitAll();
-                
-                auth.anyRequest().authenticated();
-            })
-            .addFilterBefore(securityCandidateFilter, BasicAuthenticationFilter.class)
-            .addFilterBefore(securityCompanyFilter, BasicAuthenticationFilter.class);
-        
+                .authorizeHttpRequests(auth -> {
+                    auth
+                            .requestMatchers("/candidate/").permitAll()
+                            .requestMatchers("/company/").permitAll()
+                            .requestMatchers("/candidate/auth").permitAll()
+                            .requestMatchers("/company/auth").permitAll()
+                            .requestMatchers(SWAGGER_LIST).permitAll();
+
+                    auth.anyRequest().authenticated();
+                })
+                .addFilterBefore(securityCandidateFilter, BasicAuthenticationFilter.class)
+                .addFilterBefore(securityCompanyFilter, BasicAuthenticationFilter.class);
+
         return http.build();
     }
-    
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
