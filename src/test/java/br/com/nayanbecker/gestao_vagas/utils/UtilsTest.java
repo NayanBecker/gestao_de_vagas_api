@@ -20,7 +20,7 @@ public class UtilsTest {
         }
 
     }
-    public static String generateToken(UUID idCompany){
+    public static String generateToken(UUID idCompany, String secret){
         Algorithm algorithm = Algorithm.HMAC256("JAVA_TOKEN_SECRET13A1R");
         var expiresIn = Instant.now().plus(Duration.ofHours(2));
         var token = JWT.create()
