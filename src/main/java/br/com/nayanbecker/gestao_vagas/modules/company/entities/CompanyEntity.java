@@ -43,8 +43,6 @@ public class CompanyEntity {
     @Length(min = 6, message = "Password should have at least 6 characters")
     private String password;
 
-    private String phone;
-
     @Length(max = 500)
     private String description;
     private String website;

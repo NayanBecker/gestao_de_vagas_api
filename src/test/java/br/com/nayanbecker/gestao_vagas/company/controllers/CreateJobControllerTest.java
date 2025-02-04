@@ -53,9 +53,11 @@ public class CreateJobControllerTest {
                 .username("COMPANY_USERNAME")
                 .name("COMPANY_NAME")
                 .build();
+
         company = companyRepository.saveAndFlush(company);
 
         var createdJobDTO = CreateJobDTO.builder()
+                .title("TITTLE_TEST")
                 .benefits("BENEFITS_TEST")
                 .description("DESCRIPTION_TEST")
                 .level("LEVEL_TEST")
@@ -70,18 +72,20 @@ public class CreateJobControllerTest {
 
         System.out.println(result);
     }
+
     @Test
-    public void should_not_be_able_to_create_a_new_job_if_company_not_found() throws Exception{
+    public void should_not_be_able_to_create_a_new_job_if_company_not_found() throws Exception {
         var createdJobDTO = CreateJobDTO.builder()
-        .benefits("BENEFITS_TEST")
-        .description("DESCRIPTION_TEST")
-        .level("LEVEL_TEST")
-        .build();
-        
+                .title("TITTLE_TEST")
+                .benefits("BENEFITS_TEST")
+                .description("DESCRIPTION_TEST")
+                .level("LEVEL_TEST")
+                .build();
+
         mvc.perform(MockMvcRequestBuilders.post("/company/jobs/")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(UtilsTest.objectToJSON(createdJobDTO))
-            .header("Authorization", UtilsTest.generateToken(UUID.randomUUID(), "JAVA_TOKEN_SECRET13A1R")))
-            .andExpect(MockMvcResultMatchers.status().isBadRequest());
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(UtilsTest.objectToJSON(createdJobDTO))
+                .header("Authorization", UtilsTest.generateToken(UUID.randomUUID(), "JAVA_TOKEN_SECRET13A1R")))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }
