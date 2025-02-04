@@ -13,9 +13,9 @@ import br.com.nayanbecker.gestao_vagas.modules.candidate.repository.CandidateRep
 @Service
 public class ProfileCandidateUseCase {
 
-
     @Autowired
     private CandidateRepository candidateRepository;
+
 
     public ProfileCandidateResponseDTO execute(UUID idCandidate){
         var candidate = this.candidateRepository.findById(idCandidate)
@@ -30,7 +30,7 @@ public class ProfileCandidateUseCase {
             .username(candidate.getUsername())
             .id(candidate.getId())
             .build();
+
         return candidateDTO;
     }
-
 }

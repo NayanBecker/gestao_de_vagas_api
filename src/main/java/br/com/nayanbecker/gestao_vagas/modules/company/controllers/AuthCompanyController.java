@@ -23,6 +23,7 @@ public class AuthCompanyController {
         try {
             var result =  authCompanyUseCase.execute(authCompanyDTO);
             return ResponseEntity.ok().body(result);
+            
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

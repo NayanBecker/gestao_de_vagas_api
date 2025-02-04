@@ -19,8 +19,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity(name = "job")
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

@@ -10,12 +10,14 @@ import br.com.nayanbecker.gestao_vagas.modules.candidate.repository.CandidateRep
 
 @Service
 public class CreateCandidateUseCase {
+
     @Autowired
     private CandidateRepository candidateRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    
     public CandidateEntity execute(CandidateEntity candidateEntity) {
 
     this.candidateRepository

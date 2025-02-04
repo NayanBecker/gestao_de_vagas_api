@@ -49,6 +49,5 @@ public class CandidateEntity {
     private String description;
 
     @CreationTimestamp
-    @Schema(description = "Timestamp when the candidate was created", example = "2023-10-01T12:34:56.789")
     private LocalDateTime createdAt;
 }
