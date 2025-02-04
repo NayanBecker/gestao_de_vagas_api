@@ -30,8 +30,9 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
 
         if (request.getRequestURI().startsWith("/candidate")) {
             if (header != null) {
-
+                
                 var token = this.jwtProvider.validateToken(header);
+
                 if (token == null) {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
@@ -41,7 +42,7 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
                 var roles = token.getClaim("roles").asList(Object.class);
 
                 var grands = roles.stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString()))
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString().toUpperCase()))
                         .toList();
 
                 UsernamePasswordAuthenticationToken auth

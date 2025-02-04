@@ -34,7 +34,7 @@ public class AuthCompanyUseCase {
     public AuthCompanyResponseDTO execute(AuthCompanyRequestDTO authCompanyRequestDTO) throws AuthenticationException {
         var company = this.companyRepository.findByEmail(authCompanyRequestDTO.getEmail())
                 .orElseThrow(() -> {
-                    throw new UsernameNotFoundException("Company not found");
+                    throw new UsernameNotFoundException("Company canot found");
                 });
 
         var passwordMatches = this.passwordEncoder
@@ -48,14 +48,18 @@ public class AuthCompanyUseCase {
         var token = JWT.create()
                 .withIssuer("javagas")
                 .withSubject(company.getId().toString())
-                .withClaim("roles", Arrays.asList("company"))
+                .withClaim("roles", Arrays.asList("COMPANY"))
                 .withExpiresAt(expiresIn)
                 .sign(algorithm);
 
+                var roles = Arrays.asList("COMPANY");
+
         var authCompanyResponseDTO = AuthCompanyResponseDTO.builder()
                 .access_token(token)
-                .expires_in(expiresIn.getEpochSecond())
+                .expires_in(expiresIn.toEpochMilli())
+                .roles(roles)
                 .build();
+
         return authCompanyResponseDTO;
     }
 

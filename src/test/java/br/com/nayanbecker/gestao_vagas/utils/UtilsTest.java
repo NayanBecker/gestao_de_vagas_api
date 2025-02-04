@@ -20,15 +20,16 @@ public class UtilsTest {
         }
 
     }
-    public static String generateToken(UUID idCompany, String secret){
+
+    public static String generateToken(UUID idCompany, String secret) {
         Algorithm algorithm = Algorithm.HMAC256("JAVA_TOKEN_SECRET13A1R");
         var expiresIn = Instant.now().plus(Duration.ofHours(2));
         var token = JWT.create()
                 .withIssuer("javagas")
                 .withSubject(idCompany.toString())
-                .withClaim("roles", Arrays.asList("company"))
+                .withClaim("roles", Arrays.asList("COMPANY"))
                 .withExpiresAt(expiresIn)
                 .sign(algorithm);
-            return token;
+        return token;
     }
 }
