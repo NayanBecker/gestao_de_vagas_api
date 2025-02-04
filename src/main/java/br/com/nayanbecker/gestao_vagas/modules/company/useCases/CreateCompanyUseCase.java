@@ -18,12 +18,11 @@ public class CreateCompanyUseCase {
     private PasswordEncoder passwordEncoder;
 
     public CompanyEntity execute(CompanyEntity companyEntity) {
-
-    this.companyRepository
-        .findByEmailOrUsername(companyEntity.getEmail(), companyEntity.getUsername())
-        .ifPresent((user) -> {
-            throw new UserFoundException("company already exists");
-        });
+        this.companyRepository
+                .findByEmailOrUsername(companyEntity.getEmail(), companyEntity.getUsername())
+                .ifPresent((user) -> {
+                    throw new UserFoundException("company already exists");
+                });
 
         var password = passwordEncoder.encode(companyEntity.getPassword());
         companyEntity.setPassword(password);

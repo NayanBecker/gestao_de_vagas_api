@@ -12,5 +12,7 @@ public interface JobRepository extends JpaRepository<JobEntity, UUID> {
 
     List<JobEntity> findByTitleContainingIgnoreCase(String title);
     
+    List<JobEntity> findByCompanyId(UUID companyId);
+    
     
 }
