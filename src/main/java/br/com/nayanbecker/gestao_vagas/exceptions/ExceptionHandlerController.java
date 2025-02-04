@@ -27,7 +27,7 @@ public class ExceptionHandlerController {
 
         e.getBindingResult().getFieldErrors().forEach(err -> {
             String message = messageSource.getMessage(err, LocaleContextHolder.getLocale());
-            ErrorMessageDTO error = new ErrorMessageDTO(err.getField(), message);
+            ErrorMessageDTO error = new ErrorMessageDTO(message, err.getField());
             dto.add(error);
         });
 

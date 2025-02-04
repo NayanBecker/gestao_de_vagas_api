@@ -92,22 +92,23 @@ public class CandidateController {
     @PreAuthorize("hasRole('CANDIDATE')")
     @Operation(summary = "List all jobs for candidate")
     @SecurityRequirement(name = "jwt_auth")
-    @ApiResponse(responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = JobEntity.class))))
+    @ApiResponse(responseCode = "200", content = {
+        @Content(array = @ArraySchema(schema = @Schema(implementation = JobEntity.class)))
+    })
     public List<JobEntity> findJobByFilter(@RequestParam String filter) {
         return this.listAllJobsByFilterUseCase.execute(filter);
     }
 
     @PostMapping("/job/apply")
     @PreAuthorize("hasRole('CANDIDATE')")
-    @Operation(summary = "Candidate apply for a Job")
+    @Operation(summary = "Inscrição do candidato para uma vaga", description = "Essa função é responsável por realizar a inscrição do candidato em uma vaga.")
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> applyJob(HttpServletRequest request, @RequestBody UUID idJob) {
 
         var idCandidate = request.getAttribute("candidate_id");
 
         try {
-            var result = this.applyJobCandidateUseCase.execute(UUID.fromString(idCandidate.toString()),
-                    idJob);
+            var result = this.applyJobCandidateUseCase.execute(UUID.fromString(idCandidate.toString()), idJob);
             return ResponseEntity.ok().body(result);
 
         } catch (Exception e) {

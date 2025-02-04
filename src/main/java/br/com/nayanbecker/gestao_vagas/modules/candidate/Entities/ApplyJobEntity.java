@@ -3,6 +3,8 @@ package br.com.nayanbecker.gestao_vagas.modules.candidate.Entities;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import br.com.nayanbecker.gestao_vagas.modules.company.entities.JobEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,5 +44,6 @@ public class ApplyJobEntity {
     @Column(name = "job_id")
     private UUID jobId;
 
+    @CreationTimestamp
     private LocalDateTime createdAt;
 }
