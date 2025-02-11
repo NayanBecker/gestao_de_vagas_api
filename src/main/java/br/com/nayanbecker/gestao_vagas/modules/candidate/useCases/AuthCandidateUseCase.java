@@ -31,7 +31,7 @@ public class AuthCandidateUseCase {
     private PasswordEncoder passwordEncoder;
 
     public AuthCandidateResponseDTO execute(AuthCandidateRequestDTO authCandidateRequestDTO) throws AuthenticationException {
-        var candidate = this.candidateRepository.findByUsername(authCandidateRequestDTO.username())
+        var candidate = this.candidateRepository.findByEmail(authCandidateRequestDTO.email())
                 .orElseThrow(() -> {
                     throw new UsernameNotFoundException("Candidate canot found");
                 });

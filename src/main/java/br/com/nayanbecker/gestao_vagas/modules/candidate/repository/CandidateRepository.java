@@ -10,5 +10,6 @@ import br.com.nayanbecker.gestao_vagas.modules.candidate.Entities.CandidateEntit
 public interface CandidateRepository extends JpaRepository<CandidateEntity, UUID>{
     Optional<CandidateEntity> findByEmailOrUsername(String email, String username);
     Optional<CandidateEntity> findByUsername(String username);
+    Optional<CandidateEntity> findByEmail(String email);
     
 }
